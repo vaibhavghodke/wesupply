@@ -5,12 +5,20 @@ const db = require('../db');
 // Create item
 router.post('/', (req, res) => {
   const { name, description } = req.body;
+  
+  if (!name) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
+  
   const stmt = db.prepare('INSERT INTO items (name, description) VALUES (?, ?)');
-  stmt.run(name, description, function(err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.status(201).json({ id: this.lastID, name, description });
+  stmt.run(name, description || null, function(err) {
+    if (err) {
+      stmt.finalize();
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(201).json({ id: this.lastID, name, description: description || null });
+    stmt.finalize();
   });
-  stmt.finalize();
 });
 
 // Read all

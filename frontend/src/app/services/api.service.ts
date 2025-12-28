@@ -16,6 +16,10 @@ export class ApiService {
     return await firstValueFrom(this.http.post(`${this.base}/items`, item));
   }
 
+  async updateItem(id: number, item: any) {
+    return await firstValueFrom(this.http.put(`${this.base}/items/${id}`, item));
+  }
+
   async deleteItem(id: number) {
     return await firstValueFrom(this.http.delete(`${this.base}/items/${id}`));
   }

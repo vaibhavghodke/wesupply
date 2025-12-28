@@ -12,7 +12,7 @@
 
   <!-- Categories grid -->
   <div class="row g-4">
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let c of categories">
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let c of items">
       <div class="card category-card text-center p-3">
         <div class="icon-placeholder mb-2">
           <img [src]="'assets/categories/' + getSlug(c) + '.svg'" [alt]="c" style="width:64px;height:64px;object-fit:contain"/>

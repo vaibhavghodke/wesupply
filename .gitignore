@@ -9,3 +9,4 @@ backend/smoke_test.js
 frontend/package-lock.json
 frontend/.angular/cache
 
+package-lock.json
