@@ -1,0 +1,9 @@
+/node_modules
+/dist
+/build
+backend/package-lock.json
+backend/smoke_test_runner.js
+backend/smoke_test.js
+frontend/package-lock.json
+frontend/.angular/cache
+
