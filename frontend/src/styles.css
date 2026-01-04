@@ -3,7 +3,7 @@
 	--brand-yellow-dark: #e4b000;
 	--brand-green: #1e8f3e;
 	--muted: #6c757d;
-	--card-bg: #f9f422;
+	--card-bg: #f4be1a;
 	--page-bg: #fbfdfb;
 }
 
@@ -30,4 +30,10 @@ body {
 
 /* Misc */
 .card { border: none; }
+
+.card-body {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  background-color: #d5f9d8;
+}
 

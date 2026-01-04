@@ -3,21 +3,17 @@ import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-manage-items',
+  templateUrl: './manage-items.component.html',
+  styleUrls: ['./manage-items.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class ManageItemsComponent implements OnInit {
   items: any[] = [];
   name = '';
   description = '';
   editingItem: any = null;
   editName = '';
   editDescription = '';
-
-  categories = [
-    'Cement','Tiling','Painting','Water Proofing','Plywood, MDF & HDHMR','Fevicol','Wires','Switches & Sockets','Hinges, Channels & Handles','Kitchen Systems & Accessories','Wardrobe & Bed Fittings','Door Locks & Hardware'
-  ];
 
   constructor(private api: ApiService, private router: Router) {}
 
@@ -60,10 +56,7 @@ export class DashboardComponent implements OnInit {
   async update() {
     if (!this.editName || !this.editingItem) return;
     try {
-      await this.api.updateItem(this.editingItem.id, { 
-        name: this.editName, 
-        description: this.editDescription 
-      });
+      await this.api.updateItem(this.editingItem.id, { name: this.editName, description: this.editDescription });
       this.cancelEdit();
       await this.load();
     } catch (e) {
@@ -80,11 +73,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  getSlug(c: string) {
-    return c.toLowerCase().replace(/[,&]/g,  '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  }
-
-  viewItemDetails(item: any) {
-    this.router.navigate(['/item', item.id]);
+  goBack() {
+    this.router.navigate(['/']);
   }
 }

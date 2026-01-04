@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const itemsRouter = require('./routes/items');
+const itemDetailsRouter = require('./routes/item-details');
+const orderSummaryHistoryRouter = require('./routes/order-summary-history');
 const db = require('./db');
 
 const app = express();
@@ -11,6 +13,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/items', itemsRouter);
+app.use('/api/item-details', itemDetailsRouter);
+app.use('/api/order-summary-history', orderSummaryHistoryRouter);
 
 app.get('/', (req, res) => res.json({ status: 'ok' }));
 

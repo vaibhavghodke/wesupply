@@ -4,19 +4,19 @@ const db = require('../db');
 
 // Create item
 router.post('/', (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, image } = req.body;
   
   if (!name) {
     return res.status(400).json({ error: 'Name is required' });
   }
   
-  const stmt = db.prepare('INSERT INTO items (name, description) VALUES (?, ?)');
-  stmt.run(name, description || null, function(err) {
+  const stmt = db.prepare('INSERT INTO items (name, description, image) VALUES (?, ?, ?)');
+  stmt.run(name, description || null, image || null, function(err) {
     if (err) {
       stmt.finalize();
       return res.status(500).json({ error: err.message });
     }
-    res.status(201).json({ id: this.lastID, name, description: description || null });
+    res.status(201).json({ id: this.lastID, name, description: description || null, image: image || null });
     stmt.finalize();
   });
 });
@@ -40,14 +40,14 @@ router.get('/:id', (req, res) => {
 
 // Update
 router.put('/:id', (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, image } = req.body;
   db.run(
-    'UPDATE items SET name = ?, description = ? WHERE id = ?',
-    [name, description, req.params.id],
+    'UPDATE items SET name = ?, description = ?, image = ? WHERE id = ?',
+    [name, description, image || null, req.params.id],
     function(err) {
       if (err) return res.status(500).json({ error: err.message });
       if (this.changes === 0) return res.status(404).json({ error: 'Not found' });
-      res.json({ id: req.params.id, name, description });
+      res.json({ id: req.params.id, name, description, image: image || null });
     }
   );
 });

@@ -13,33 +13,23 @@
   <!-- Categories grid -->
   <div class="row g-4">
     <div class="col-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let c of items">
-      <div class="card category-card text-center p-3">
+      <div class="card category-card text-center p-3" style="cursor: pointer;" (click)="viewItemDetails(c)">
         <div class="icon-placeholder mb-2">
-          <img [src]="'assets/categories/' + getSlug(c) + '.svg'" [alt]="c" style="width:64px;height:64px;object-fit:contain"/>
+          <img [src]="'assets/categories/' + (c.image || getSlug(c.name)) + '.png'" [alt]="c.name" style="width:64px;height:64px;object-fit:contain"/>
         </div>
-        <div class="small text-muted">{{ c }}</div>
+        <div class="small fw-bold">{{ c.name }}</div>
       </div>
     </div>
   </div>
 
-  <!-- Recent items + add form -->
-  <div class="row mt-5">
+  <!-- Manage Items quick link + Overview -->
+  <!-- div class="row mt-5">
     <div class="col-lg-6">
-      <h5>Manage Items</h5>
-      <div class="mb-3">
-        <input class="form-control mb-2" [(ngModel)]="name" placeholder="Name">
-        <textarea class="form-control mb-2" [(ngModel)]="description" placeholder="Description"></textarea>
-        <button class="btn btn-primary" (click)="add()">Add Item</button>
+      <div class="card p-3 h-100 d-flex align-items-start justify-content-center">
+        <h5>Manage Items</h5>
+        <p class="text-muted">Add, edit or remove items on a dedicated management screen.</p>
+        <a class="btn btn-primary" [routerLink]="['/manage-items']">Go to Manage Items</a>
       </div>
-      <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-start" *ngFor="let it of items">
-          <div>
-            <div class="fw-bold">{{ it.name }}</div>
-            <div class="text-muted">{{ it.description }}</div>
-          </div>
-          <button class="btn btn-sm btn-danger" (click)="remove(it.id)">Delete</button>
-        </li>
-      </ul>
     </div>
     <div class="col-lg-6">
       <h5>Overview</h5>
@@ -48,5 +38,5 @@
         <p class="mb-1">Total items: <strong>{{ items.length }}</strong></p>
       </div>
     </div>
-  </div>
+  </div -->
 </div>

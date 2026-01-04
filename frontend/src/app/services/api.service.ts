@@ -23,4 +23,33 @@ export class ApiService {
   async deleteItem(id: number) {
     return await firstValueFrom(this.http.delete(`${this.base}/items/${id}`));
   }
+
+  // Item Details methods
+  async getItemDetails(itemName?: string, itemId?: number) {
+    let url = `${this.base}/item-details`;
+    const params: string[] = [];
+    if (itemName) params.push(`item_name=${encodeURIComponent(itemName)}`);
+    if (itemId) params.push(`item_id=${itemId}`);
+    if (params.length > 0) url += '?' + params.join('&');
+    return await firstValueFrom(this.http.get<any[]>(url));
+  }
+
+  // Order Summary History methods
+  async createOrder(order: any) {
+    return await firstValueFrom(this.http.post(`${this.base}/order-summary-history`, order));
+  }
+
+  async getOrders(filters?: any) {
+    let url = `${this.base}/order-summary-history`;
+    if (filters) {
+      const params = new URLSearchParams();
+      if (filters.status) params.append('status', filters.status);
+      if (filters.created_by) params.append('created_by', filters.created_by);
+      if (filters.start_date) params.append('start_date', filters.start_date);
+      if (filters.end_date) params.append('end_date', filters.end_date);
+      const queryString = params.toString();
+      if (queryString) url += '?' + queryString;
+    }
+    return await firstValueFrom(this.http.get<any[]>(url));
+  }
 }
