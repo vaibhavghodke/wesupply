@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center mb-3">
+    <button class="btn btn-secondary me-3" (click)="goBack()">← Back</button>
+    <h4 class="mb-0">Orders Summary</h4>
+  </div>
+
+  <div *ngIf="loading">Loading orders...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="!loading && orders.length === 0" class="text-muted">No orders found.</div>
+
+  <div *ngIf="!loading && orders.length > 0" class="table-responsive">
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Contact</th>
+          <th>Created By</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let o of orders">
+          <td>{{ o.order_id }}</td>
+          <td>{{ o.create_date ? (o.create_date | date:'medium') : '—' }}</td>
+          <td>{{ o.status }}</td>
+          <td>{{ o.contact }}</td>
+          <td>{{ o.created_by || '—' }}</td>
+          <td style="max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.order_summary }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
