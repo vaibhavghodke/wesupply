@@ -13,7 +13,7 @@
   <!-- Categories grid -->
   <div class="row g-4">
     <div class="col-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let c of items">
-      <div class="card category-card text-center p-3" style="cursor: pointer;" (click)="viewItemDetails(c)">
+      <div class="card category-card text-center p-3" style="cursor: pointer;" [class.disabled]="c.stock === 'inactive'" [attr.aria-disabled]="c.stock === 'inactive'" (click)="c.stock !== 'inactive' && viewItemDetails(c)">
         <div class="icon-placeholder mb-2">
           <img [src]="'assets/categories/' + (c.image || getSlug(c.name)) + '.png'" [alt]="c.name" style="width:64px;height:64px;object-fit:contain"/>
         </div>

@@ -27,7 +27,16 @@ export class DashboardComponent implements OnInit {
 
   async load() {
     try {
-      this.items = await this.api.getItems();
+      const fetched = await this.api.getItems();
+      const isActive = (it: any) => (it && it.stock && String(it.stock).toLowerCase() === 'active');
+      this.items = (fetched || []).slice().sort((a: any, b: any) => {
+        const aActive = isActive(a);
+        const bActive = isActive(b);
+        if (aActive && !bActive) return -1;
+        if (!aActive && bActive) return 1;
+        // otherwise keep alphabetical order by name for determinism
+        return String((a.name || '')).localeCompare(String((b.name || '')));
+      });
     } catch (e) {
       console.error('Failed to load items', e);
     }
@@ -85,6 +94,8 @@ export class DashboardComponent implements OnInit {
   }
 
   viewItemDetails(item: any) {
+    if (!item) return;
+    if (item.stock && String(item.stock).toLowerCase() === 'inactive') return;
     this.router.navigate(['/item', item.id]);
   }
 }
