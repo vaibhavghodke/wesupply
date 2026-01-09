@@ -1,0 +1,5 @@
+.container .table td, .container .table th {
+  vertical-align: middle;
+}
+
+.table-responsive { max-height: 60vh; overflow: auto; }

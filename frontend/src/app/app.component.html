@@ -1,0 +1,17 @@
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a [routerLink]="['/']" style="display:inline-block;vertical-align:middle">
+      <img src="assets/logo.png" alt="WeSupply" style="width:70px;height:70px;object-fit:contain">
+    </a>
+    <a class="navbar-brand" [routerLink]="['/']">WeSupply</a>
+    
+    <div>
+      <a class="me-3" [routerLink]="['/manage-items']">Manage Items</a>
+      <a class="me-3" [routerLink]="['/orders-summary']">Orders Summary</a>
+      <a class="me-3" href="#">Search</a>
+      <a class="me-3" href="#">Account</a>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
