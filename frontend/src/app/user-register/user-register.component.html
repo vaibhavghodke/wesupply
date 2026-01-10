@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center mb-3">
+    <h3 class="me-auto mb-0">Register User</h3>
+    <button class="btn btn-outline-secondary" (click)="router.navigate(['/'])">Back to Dashboard</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <form (ngSubmit)="submit()">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">First name *</label>
+        <input class="form-control" [(ngModel)]="firstname" name="firstname" required />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Last name *</label>
+        <input class="form-control" [(ngModel)]="lastname" name="lastname" required />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">User ID *</label>
+        <input class="form-control" [(ngModel)]="userid" name="userid" required />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Password *</label>
+        <input type="password" class="form-control" [(ngModel)]="password" name="password" required />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Email *</label>
+        <input type="email" class="form-control" [(ngModel)]="email" name="email" required />
+        <div *ngIf="email && !isEmailValid()" class="form-text text-danger">Invalid email format.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Primary Phone *</label>
+        <input class="form-control" [(ngModel)]="primary_phone" name="primary_phone" required />
+        <div *ngIf="primary_phone && !isPhoneValid(primary_phone)" class="form-text text-danger">Enter valid 10-digit mobile number.</div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Secondary Phone</label>
+        <input class="form-control" [(ngModel)]="secondary_phone" name="secondary_phone" />
+        <div *ngIf="secondary_phone && !isPhoneValid(secondary_phone)" class="form-text text-danger">Enter valid 10-digit mobile number.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">City *</label>
+        <input class="form-control" [(ngModel)]="city" name="city" required />
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Address</label>
+        <textarea class="form-control" [(ngModel)]="address" name="address" rows="2"></textarea>
+      </div>
+
+      <div class="col-12 d-flex justify-content-end">
+        <button class="btn btn-secondary me-2" type="button" (click)="router.navigate(['/'])">Cancel</button>
+        <button class="btn btn-primary" type="submit" [disabled]="!canSubmit()">{{ submitting ? 'Submitting…' : 'Register' }}</button>
+      </div>
+    </div>
+  </form>
+</div>

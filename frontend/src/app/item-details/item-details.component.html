@@ -1,11 +1,8 @@
 <div class="container mt-4">
-  <!-- Back button -->
-  <button class="btn btn-outline-secondary mb-3" (click)="goBack()">
-    ← Back to Dashboard
-  </button>
-
-  <!-- Screen Title -->
-  <h2 class="mb-4">Item Details</h2>
+  <div class="d-flex align-items-center mb-3">
+    <h2 class="me-auto mb-0">Item Details</h2>
+    <button class="btn btn-outline-secondary" (click)="goBack()">Back to Dashboard</button>
+  </div>
 
   <!-- Item Information Section -->
   <div class="card mb-4" *ngIf="item">

@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center mb-3">
+    <h4 class="me-auto">Order Summary</h4>
+    <button class="btn btn-outline-secondary" (click)="back()">Back to Dashboard</button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4">Loading orders…</div>
+
+  <div *ngIf="!loading">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Summary</th>
+          <th>Contact</th>
+          <th>Status</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let o of orders">
+          <td>{{ o.order_id }}</td>
+          <td style="max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.order_summary }}</td>
+          <td>{{ o.contact }}</td>
+          <td>{{ o.status }}</td>
+          <td>{{ o.create_date | date:'short' }}</td>
+        </tr>
+        <tr *ngIf="orders.length === 0">
+          <td colspan="5" class="text-center">No orders found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

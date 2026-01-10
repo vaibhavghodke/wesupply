@@ -52,4 +52,21 @@ export class ApiService {
     }
     return await firstValueFrom(this.http.get<any[]>(url));
   }
+
+  // Users
+  async createUser(user: any) {
+    return await firstValueFrom(this.http.post(`${this.base}/users`, user));
+  }
+
+  async getUsers() {
+    return await firstValueFrom(this.http.get<any[]>(`${this.base}/users`));
+  }
+
+  async updateUser(id: number, user: any) {
+    return await firstValueFrom(this.http.put(`${this.base}/users/${id}`, user));
+  }
+
+  async deleteUser(id: number) {
+    return await firstValueFrom(this.http.delete(`${this.base}/users/${id}`));
+  }
 }

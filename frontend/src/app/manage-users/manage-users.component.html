@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center mb-3">
+    <h3 class="me-auto mb-0">Manage Users</h3>
+    <a class="btn btn-outline-secondary" routerLink="/">Back to Dashboard</a>
+  </div>
+
+  <div *ngIf="loading" class="py-4 text-center">Loading users…</div>
+
+  <table *ngIf="!loading" class="table table-sm table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>UserID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>City</th>
+        <th>Role</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of users">
+        <td>{{ u.id }}</td>
+        <td>{{ u.userid }}</td>
+        <td>{{ u.firstname }} {{ u.lastname }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.primary_phone }}</td>
+        <td>{{ u.city }}</td>
+        <td>{{ u.role || 'user' }}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-secondary me-1" (click)="edit(u)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="remove(u.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="editing" class="card mt-3 p-3">
+    <h5>Edit User</h5>
+    <div class="row g-2">
+      <div class="col-md-3"><input class="form-control" [(ngModel)]="editing.firstname" placeholder="First name"/></div>
+      <div class="col-md-3"><input class="form-control" [(ngModel)]="editing.lastname" placeholder="Last name"/></div>
+      <div class="col-md-3"><input class="form-control" [(ngModel)]="editing.email" placeholder="Email"/></div>
+      <div class="col-md-3"><input class="form-control" [(ngModel)]="editing.primary_phone" placeholder="Primary phone"/></div>
+    </div>
+    <div class="row g-2 mt-2">
+      <div class="col-md-4"><input class="form-control" [(ngModel)]="editing.city" placeholder="City"/></div>
+      <div class="col-md-4">
+        <select class="form-select" [(ngModel)]="editing.role">
+          <option value="user">user</option>
+          <option value="admin">admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-3 text-end">
+      <button class="btn btn-secondary me-2" (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
