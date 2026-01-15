@@ -9,7 +9,21 @@ async function list(req, res) {
       company: req.query.company,
       order_type: req.query.order_type
     };
-    const rows = await service.list(filters);
+    let rows = await service.list(filters);
+    // If caller provided item_name but we found no rows, also try matching by `type`
+    if ((filters && filters.item_name) && Array.isArray(rows) && rows.length === 0) {
+      const altFilters = Object.assign({}, filters);
+      delete altFilters.item_name;
+      altFilters.type = filters.item_name;
+      rows = await service.list(altFilters);
+    }
+    // Prevent clients from using stale cached responses (avoid 304 empty bodies in UI)
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('Surrogate-Control', 'no-store');
+    // Clear any ETag for this response so browsers won't send conditional If-None-Match
+    res.set('ETag', '');
     res.json(rows);
   } catch (err) {
     console.error('item-detail.list error', err);
@@ -31,6 +45,11 @@ async function get(req, res) {
 async function listByItemName(req, res) {
   try {
     const rows = await service.listByItemName(req.params.itemName);
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('Surrogate-Control', 'no-store');
+    res.set('ETag', '');
     res.json(rows);
   } catch (err) {
     console.error('item-detail.listByItemName error', err);

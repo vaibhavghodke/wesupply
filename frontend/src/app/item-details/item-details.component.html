@@ -43,7 +43,7 @@
               <th>Type</th>
               <th>Company</th>
               <th>Order Type</th>
-              <th>Price per {{ itemDetails[0]?.quantity }}</th>
+              <th>Price per {{ itemDetails[0]?.size }}</th>
             </tr>
           </thead>
           <tbody>
@@ -58,7 +58,7 @@
                   {{ detail.order_type }}
                 </span>
               </td>
-              <td>₹{{ detail.price }}</td>
+              <td>₹{{ detail.selling_price }}</td>
             </tr>
           </tbody>
         </table>
@@ -107,7 +107,7 @@
 
           <!-- Price Display -->
           <div class="mb-3" *ngIf="selectedPrice > 0">
-            <label class="form-label">Price per {{ selectedQuantity }}</label>
+            <label class="form-label">Price per {{ selectedSize }}</label>
             <div class="alert alert-info mb-0">
               <strong>₹{{ selectedPrice }}</strong>
             </div>

@@ -39,13 +39,13 @@ function getByItemName(itemName) {
 }
 
 function createItemDetail(detail) {
-  const { item_id, item_name, type, company, quantity, price, order_type } = detail;
+  const { item_id, type, item_name, item_description, company, size, mrp, purchase_price, selling_price, order_type } = detail;
   return new Promise((resolve, reject) => {
-    const stmt = db.prepare('INSERT INTO item_details (item_id, item_name, type, company, quantity, price, order_type) VALUES (?, ?, ?, ?, ?, ?, ?)');
-    stmt.run(item_id, item_name, type, company, quantity, price, order_type, function(err) {
+    const stmt = db.prepare('INSERT INTO item_details (item_id, type, item_name, item_description, company, size, mrp, purchase_price, selling_price, order_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    stmt.run(item_id, type, item_name, item_description, company, size, mrp, purchase_price, selling_price, order_type, function(err) {
       stmt.finalize();
       if (err) return reject(err);
-      resolve({ item_detail_id: this.lastID, item_id, item_name, type, company, quantity, price, order_type });
+      resolve({ item_detail_id: this.lastID, item_id, type, item_name, item_description, company, size, mrp, purchase_price, selling_price, order_type });
     });
   });
 }
@@ -54,7 +54,7 @@ function updateItemDetail(id, fields) {
   return new Promise((resolve, reject) => {
     const updates = [];
     const params = [];
-    ['type','company','quantity','price','order_type'].forEach(k => {
+    ['type','company','size','mrp','purchase_price','selling_price','item_description','order_type','item_name','item_id'].forEach(k => {
       if (fields[k] !== undefined) { updates.push(`${k} = ?`); params.push(fields[k]); }
     });
     if (updates.length === 0) return resolve(null);

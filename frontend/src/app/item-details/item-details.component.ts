@@ -17,7 +17,7 @@ export class ItemDetailsComponent implements OnInit {
   selectedCompany: string = '';
   selectedOrderType: string = '';
   selectedPrice: number = 0;
-  selectedQuantity: string = '';
+  selectedSize: string = '';
   customerName: string = '';
   customerPhone: string = '';
   customerEmail: string = '';
@@ -148,8 +148,8 @@ export class ItemDetailsComponent implements OnInit {
         d.order_type === this.selectedOrderType
       );
       if (selectedDetail) {
-        this.selectedPrice = selectedDetail.price;
-        this.selectedQuantity = selectedDetail.quantity;
+        this.selectedPrice = selectedDetail.selling_price;
+        this.selectedSize = selectedDetail.size;
       }
     }
   }
@@ -225,8 +225,8 @@ export class ItemDetailsComponent implements OnInit {
         Type: ${this.selectedType}
         Company: ${this.selectedCompany}
         Order Type: ${this.selectedOrderType}
-        Quantity: ${this.selectedQuantity}
-        Price: ₹${this.selectedPrice} per ${this.selectedQuantity}
+        Size: ${this.selectedSize}
+        Price: ₹${this.selectedPrice} per ${this.selectedSize}
         Customer: ${this.customerName}
         Email: ${this.customerEmail}
         Phone: ${this.customerPhone}
@@ -250,7 +250,7 @@ export class ItemDetailsComponent implements OnInit {
       this.selectedCompany = '';
       this.selectedOrderType = '';
       this.selectedPrice = 0;
-      this.selectedQuantity = '';
+      this.selectedSize = '';
       this.customerName = '';
       this.customerPhone = '';
       this.customerEmail = '';

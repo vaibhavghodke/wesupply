@@ -18,11 +18,14 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS item_details (
       item_detail_id INTEGER PRIMARY KEY AUTOINCREMENT,
       item_id INTEGER NOT NULL,
+      type TEXT,
       item_name TEXT NOT NULL,
-      type TEXT NOT NULL,
-      company TEXT NOT NULL,
-      quantity TEXT NOT NULL,
-      price REAL NOT NULL,
+      item_description TEXT,
+      company TEXT,
+      size TEXT,
+      mrp REAL,
+      purchase_price REAL,
+      selling_price REAL,
       order_type TEXT NOT NULL CHECK(order_type IN ('retail', 'wholesale')),
       FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
     )

@@ -15,8 +15,8 @@ async function listByItemName(itemName) {
 }
 
 async function create(detail) {
-  const { item_id, item_name, type, company, quantity, price, order_type } = detail;
-  if (!item_id || !item_name || !type || !company || !quantity || !price || !order_type) throw { status: 400, message: 'All fields are required' };
+  const { item_id, type, item_name, item_description, company, size, mrp, purchase_price, selling_price, order_type } = detail;
+  if (!item_id || !item_name || !type || !order_type) throw { status: 400, message: 'Required fields missing: item_id, item_name, type, order_type' };
   if (!allowedOrderTypes.includes(order_type)) throw { status: 400, message: 'order_type must be either "retail" or "wholesale"' };
   return await model.createItemDetail(detail);
 }
