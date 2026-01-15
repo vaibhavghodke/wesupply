@@ -14,7 +14,7 @@
 
       <div style="margin-left:16px">
         <ng-container *ngIf="currentUser; else notLogged">
-          <div style="position:relative;display:inline-block">
+          <div style="position:relative;display:inline-block" #userMenuContainer>
             <div class="user-icon" (click)="showUserMenu = !showUserMenu" title="Account">{{ currentUser.firstname ? (currentUser.firstname.charAt(0) + (currentUser.lastname ? currentUser.lastname.charAt(0) : '')) : (currentUser.userid && currentUser.userid.charAt(0)) }}</div>
             <div *ngIf="showUserMenu" style="position:absolute;right:0;top:44px;background:#fff;border:1px solid #ddd;padding:12px;min-width:220px;z-index:30">
               <div><strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong></div>
