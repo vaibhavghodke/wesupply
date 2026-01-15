@@ -5,13 +5,29 @@
     </a>
     <a class="navbar-brand" [routerLink]="['/']">WeSupply</a>
     
-    <div>
+    <div style="display:flex;align-items:center;gap:16px">
       <a class="me-3" [routerLink]="['/manage-items']">Manage Items</a>
       <a class="me-3" [routerLink]="['/manage-users']">Manage Users</a>
       <a class="me-3" [routerLink]="['/register']">Register</a>
       <a class="me-3" [routerLink]="['/order-summary']">Order Summary</a>
       <a class="me-3" href="#">Search</a>
-      <a class="me-3" href="#">Account</a>
+
+      <div style="margin-left:16px">
+        <ng-container *ngIf="currentUser; else notLogged">
+          <div style="position:relative;display:inline-block">
+            <div class="user-icon" (click)="showUserMenu = !showUserMenu" title="Account">{{ currentUser.firstname ? (currentUser.firstname.charAt(0) + (currentUser.lastname ? currentUser.lastname.charAt(0) : '')) : (currentUser.userid && currentUser.userid.charAt(0)) }}</div>
+            <div *ngIf="showUserMenu" style="position:absolute;right:0;top:44px;background:#fff;border:1px solid #ddd;padding:12px;min-width:220px;z-index:30">
+              <div><strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong></div>
+              <div class="text-muted" style="font-size:12px">{{ currentUser.email }}</div>
+              <hr />
+              <a (click)="logout()" style="cursor:pointer">Logout</a>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #notLogged>
+          <a [routerLink]="['/login']">Login</a>
+        </ng-template>
+      </div>
     </div>
   </div>
 </nav>

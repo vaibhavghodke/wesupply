@@ -38,6 +38,26 @@ db.serialize(() => {
       created_by TEXT
     )
   `);
+
+  // Users table
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      firstname TEXT,
+      lastname TEXT,
+      userid TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      email TEXT UNIQUE,
+      primary_phone TEXT,
+      secondary_phone TEXT,
+      address TEXT,
+      city TEXT,
+      role TEXT DEFAULT 'user',
+      created_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_date DATETIME,
+      created_by TEXT
+    )
+  `);
 });
 
 module.exports = db;

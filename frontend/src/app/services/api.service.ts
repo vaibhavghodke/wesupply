@@ -69,4 +69,17 @@ export class ApiService {
   async deleteUser(id: number) {
     return await firstValueFrom(this.http.delete(`${this.base}/users/${id}`));
   }
+  
+  // Auth
+  async login(userid: string, password: string) {
+    return await firstValueFrom(this.http.post(`${this.base}/auth/login`, { userid, password }, { withCredentials: true }));
+  }
+
+  async logout() {
+    return await firstValueFrom(this.http.post(`${this.base}/auth/logout`, {}, { withCredentials: true }));
+  }
+
+  async me() {
+    return await firstValueFrom(this.http.get<any>(`${this.base}/auth/me`, { withCredentials: true }));
+  }
 }

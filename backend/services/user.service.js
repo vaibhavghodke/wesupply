@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const bcrypt = require('bcryptjs');
 const allowedRoles = ['user', 'admin'];
 
 async function listUsers() {
@@ -20,6 +21,9 @@ async function createUser(user) {
     if (existingByEmail) throw { status: 409, message: 'email already exists' };
   }
 
+  // Hash password before storing
+  const hashed = await bcrypt.hash(user.password, 10);
+  user.password = hashed;
   const created = await userModel.createUser(user);
   return created;
 }

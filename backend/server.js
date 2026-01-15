@@ -2,10 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cookieParser = require('cookie-parser');
 const itemsRouter = require('./routes/items');
 const itemDetailsRouter = require('./routes/item-details');
 const orderSummaryHistoryRouter = require('./routes/order-summary-history');
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 const db = require('./db');
 
 const app = express();
@@ -23,16 +25,21 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+// parse cookies
+app.use(cookieParser());
+
 // CORS with whitelist (allows undefined origin for tools like curl/postman)
 const whitelist = [process.env.CORS_ORIGIN || 'http://localhost:4200'];
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (whitelist.indexOf(origin) !== -1) return callback(null, true);
-    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-    return callback(new Error(msg), false);
-  }
+  origin: whitelist,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  optionsSuccessStatus: 200
 }));
+
+// Ensure preflight requests are handled with the same CORS options
+app.options('*', cors({ origin: whitelist, credentials: true, optionsSuccessStatus: 200 }));
 
 // Built-in body parser
 app.use(express.json({ limit: '10kb' }));
@@ -41,6 +48,7 @@ app.use('/api/items', itemsRouter);
 app.use('/api/item-details', itemDetailsRouter);
 app.use('/api/order-summary-history', orderSummaryHistoryRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter);
 
 app.get('/', (req, res) => res.json({ status: 'ok' }));
 

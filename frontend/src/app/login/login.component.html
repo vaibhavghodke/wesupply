@@ -1,0 +1,16 @@
+<div class="container" style="max-width:420px;margin-top:40px">
+  <h3>Login</h3>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div class="mb-3">
+    <label class="form-label">User ID</label>
+    <input class="form-control" [(ngModel)]="userid" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input class="form-control" type="password" [(ngModel)]="password" />
+  </div>
+
+  <button class="btn btn-primary" (click)="submit()" [disabled]="loading">{{ loading ? 'Signing in...' : 'Sign in' }}</button>
+</div>
