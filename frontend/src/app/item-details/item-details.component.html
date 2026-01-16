@@ -43,22 +43,22 @@
               <th>Type</th>
               <th>Company</th>
               <th>Order Type</th>
-              <th>Price per {{ itemDetails[0]?.size }}</th>
+              <th *ngFor="let s of sizes">Price per {{ s }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let detail of itemDetails">
-              <td>{{ detail.type }}</td>
-              <td>{{ detail.company }}</td>
+            <tr *ngFor="let row of displayedGroupedDetails">
+              <td>{{ row.type }}</td>
+              <td>{{ row.company }}</td>
               <td>
                 <span class="badge" [ngClass]="{
-                  'bg-success': detail.order_type === 'retail',
-                  'bg-primary': detail.order_type === 'wholesale'
+                  'bg-success': row.order_type === 'retail',
+                  'bg-primary': row.order_type === 'wholesale'
                 }">
-                  {{ detail.order_type }}
+                  {{ row.order_type }}
                 </span>
               </td>
-              <td>₹{{ detail.selling_price }}</td>
+              <td *ngFor="let s of sizes">{{ row.prices[s] !== undefined ? ('₹' + row.prices[s]) : '-' }}</td>
             </tr>
           </tbody>
         </table>
@@ -103,6 +103,15 @@
               <option *ngFor="let orderType of orderTypes" [value]="orderType">{{ orderType }}</option>
             </select>
             <div class="text-danger small" *ngIf="formErrors.orderType">{{ formErrors.orderType }}</div>
+          </div>
+
+          <!-- Size Dropdown (visible when sizes available for current selection) -->
+          <div class="mb-3" *ngIf="availableSizes && availableSizes.length > 0">
+            <label for="size" class="form-label">Size <span class="text-danger">*</span></label>
+            <select class="form-select" id="size" [(ngModel)]="selectedSize" name="size" (change)="onSizeChange()">
+              <option value="">Select Size</option>
+              <option *ngFor="let s of availableSizes" [value]="s">{{ s }}</option>
+            </select>
           </div>
 
           <!-- Price Display -->

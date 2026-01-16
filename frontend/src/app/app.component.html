@@ -6,11 +6,13 @@
     <a class="navbar-brand" [routerLink]="['/']">WeSupply</a>
     
     <div style="display:flex;align-items:center;gap:16px">
-      <a class="me-3" [routerLink]="['/manage-items']">Manage Items</a>
-      <a class="me-3" [routerLink]="['/manage-users']">Manage Users</a>
+      <ng-container *ngIf="currentUser?.role === 'admin'">
+        <a class="me-3" [routerLink]="['/manage-items']">Manage Items</a>
+        <a class="me-3" [routerLink]="['/manage-users']">Manage Users</a>
+      </ng-container>
       <a class="me-3" [routerLink]="['/register']">Register</a>
       <a class="me-3" [routerLink]="['/order-summary']">Order Summary</a>
-      <a class="me-3" href="#">Search</a>
+      
 
       <div style="margin-left:16px">
         <ng-container *ngIf="currentUser; else notLogged">

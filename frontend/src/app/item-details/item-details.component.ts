@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-item-details',
@@ -10,7 +11,14 @@ import { ApiService } from '../services/api.service';
 export class ItemDetailsComponent implements OnInit {
   item: any = null;
   itemDetails: any[] = [];
+  sizes: string[] = [];
+  groupedDetails: any[] = []; // rows grouped by type+company+order_type with size->price map
+  availableSizes: string[] = []; // sizes available for current filter
   showOrderForm = false;
+  // separate filters used for the background list (do not bind modal form to these)
+  listFilterType: string = '';
+  listFilterCompany: string = '';
+  listFilterOrderType: string = '';
   
   // Form data
   selectedType: string = '';
@@ -34,21 +42,40 @@ export class ItemDetailsComponent implements OnInit {
   
   // Form validation
   formErrors: any = {};
+  currentUser: any = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private api: ApiService
+    , private auth: AuthService
   ) {}
 
   ngOnInit(): void {
     const itemId = this.route.snapshot.paramMap.get('id');
     const itemName = this.route.snapshot.paramMap.get('name');
+    this.auth.user$.subscribe(u => this.currentUser = u);
     
     if (itemId) {
       this.loadItem(parseInt(itemId));
     } else if (itemName) {
       this.loadItemByName(decodeURIComponent(itemName));
+    }
+  }
+
+  onSizeChange() {
+    if (this.selectedType && this.selectedCompany && this.selectedOrderType && this.selectedSize) {
+      const selectedDetail = this.itemDetails.find(d => 
+        d.type === this.selectedType && 
+        d.company === this.selectedCompany && 
+        d.order_type === this.selectedOrderType &&
+        d.size === this.selectedSize
+      );
+      if (selectedDetail) {
+        this.selectedPrice = selectedDetail.selling_price;
+      } else {
+        this.selectedPrice = 0;
+      }
     }
   }
 
@@ -79,10 +106,71 @@ export class ItemDetailsComponent implements OnInit {
   async loadItemDetails(itemName: string) {
     try {
       this.itemDetails = await this.api.getItemDetails(itemName);
+      this.computeSizesAndGrouped();
       this.initializeFilters();
     } catch (e) {
       console.error('Failed to load item details', e);
     }
+  }
+
+  computeSizesAndGrouped() {
+    // compute unique sizes and sort them in logical sequence (numeric + unit aware)
+    const uniqueSizes = [...new Set(this.itemDetails.map(d => d.size))];
+    this.sizes = uniqueSizes.sort(this.sizeCompare);
+
+    // group by type|company|order_type
+    const map: any = {};
+    this.itemDetails.forEach(d => {
+      const key = `${d.type}||${d.company}||${d.order_type}`;
+      if (!map[key]) {
+        map[key] = { type: d.type, company: d.company, order_type: d.order_type, prices: {} };
+      }
+      map[key].prices[d.size] = d.selling_price;
+    });
+
+    this.groupedDetails = Object.values(map);
+  }
+
+  // comparator to order sizes like 250g, 500g, 1kg in logical numeric order
+  sizeCompare = (a: string, b: string) => {
+    const pa = this.parseSize(a);
+    const pb = this.parseSize(b);
+    if (pa && pb) {
+      if (pa.category === pb.category) {
+        return pa.value - pb.value;
+      }
+      // order categories: mass, volume, count, other
+      const order: any = { mass: 0, volume: 1, count: 2, other: 3 };
+      return (order[pa.category] || 3) - (order[pb.category] || 3);
+    }
+    if (pa) return -1;
+    if (pb) return 1;
+    return a.localeCompare(b);
+  }
+
+  parseSize(s: string) {
+    if (!s || typeof s !== 'string') return null;
+    const txt = s.trim().toLowerCase();
+    // match number and unit
+    const m = txt.match(/^([0-9]*\.?[0-9]+)\s*([a-zA-Z]+)?$/);
+    if (!m) return null;
+    const num = parseFloat(m[1]);
+    const unit = (m[2] || '').toLowerCase();
+    // categorize and normalize to base unit value
+    const massUnits: any = { kg: 1000, g: 1, mg: 0.001 };
+    const volumeUnits: any = { l: 1000, ml: 1 }; // normalize to ml
+    if (unit in massUnits) {
+      return { category: 'mass', value: num * massUnits[unit] };
+    }
+    if (unit in volumeUnits) {
+      return { category: 'volume', value: num * volumeUnits[unit] };
+    }
+    // common counts
+    if (unit === 'pcs' || unit === 'pc' || unit === 'piece' || unit === 'pieces') {
+      return { category: 'count', value: num };
+    }
+    // fallback: treat as other
+    return { category: 'other', value: num };
   }
 
   initializeFilters() {
@@ -140,18 +228,34 @@ export class ItemDetailsComponent implements OnInit {
       )].sort();
     }
 
-    // Update price and quantity when all selections are made
-    if (this.selectedType && this.selectedCompany && this.selectedOrderType) {
-      const selectedDetail = filtered.find(d => 
+    // compute available sizes for current filter
+    this.availableSizes = [...new Set(filtered.map(d => d.size))].sort();
+
+    // if size already selected, update price from matching detail
+    if (this.selectedType && this.selectedCompany && this.selectedOrderType && this.selectedSize) {
+      const selectedDetail = this.itemDetails.find(d => 
         d.type === this.selectedType && 
         d.company === this.selectedCompany && 
-        d.order_type === this.selectedOrderType
+        d.order_type === this.selectedOrderType &&
+        d.size === this.selectedSize
       );
       if (selectedDetail) {
         this.selectedPrice = selectedDetail.selling_price;
-        this.selectedSize = selectedDetail.size;
       }
+    } else {
+      // reset selectedPrice if size not selected
+      if (!this.selectedSize) this.selectedPrice = 0;
     }
+  }
+
+  // getter to show grouped rows filtered by background list filters (not modal form values)
+  get displayedGroupedDetails() {
+    return this.groupedDetails.filter(g => {
+      if (this.listFilterType && g.type !== this.listFilterType) return false;
+      if (this.listFilterCompany && g.company !== this.listFilterCompany) return false;
+      if (this.listFilterOrderType && g.order_type !== this.listFilterOrderType) return false;
+      return true;
+    });
   }
 
   onEmailInput() {
@@ -234,11 +338,12 @@ export class ItemDetailsComponent implements OnInit {
 
       const contact = `${this.customerName} | ${this.customerEmail} | ${this.customerPhone}`;
 
+      const createdBy = this.currentUser ? (this.currentUser.userid || this.currentUser.email || this.currentUser.id) : 'System';
       const order = {
         order_summary: orderSummary,
         contact: contact,
         status: 'Open',
-        created_by: 'System'
+        created_by: createdBy
       };
 
       await this.api.createOrder(order);
