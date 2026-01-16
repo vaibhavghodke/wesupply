@@ -1,2 +1,168 @@
-.container { max-width: 1100px; }
-.table td, .table th { vertical-align: middle; }
+/* Manage Users Component - Material Design 3 */
+
+.container {
+  max-width: 1200px;
+}
+
+.container h3 {
+  margin-bottom: var(--md-spacing-lg);
+  font-weight: 700;
+  color: var(--md-on-surface);
+}
+
+.table {
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--md-elevation-2);
+  margin-bottom: var(--md-spacing-lg);
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+  padding: var(--md-spacing-md);
+}
+
+.table thead {
+  background: linear-gradient(135deg, var(--md-surface-variant), rgba(30, 143, 62, 0.05));
+}
+
+.table tbody tr {
+  transition: var(--md-transition);
+}
+
+.table tbody tr:hover {
+  background: rgba(30, 143, 62, 0.05);
+}
+
+.text-end {
+  text-align: right;
+}
+
+.card {
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  box-shadow: var(--md-elevation-2);
+  margin-top: var(--md-spacing-lg);
+  overflow: hidden;
+}
+
+.card .p-3 {
+  padding: var(--md-spacing-lg);
+}
+
+.card h5 {
+  font-weight: 600;
+  color: var(--md-on-surface);
+  margin-bottom: var(--md-spacing-lg);
+  font-size: 1.25rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: var(--md-radius-sm);
+  padding: var(--md-spacing-md);
+  transition: var(--md-transition);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 3px rgba(30, 143, 62, 0.12);
+}
+
+.text-end {
+  margin-top: var(--md-spacing-lg);
+  white-space: nowrap;
+}
+
+.text-end .btn-sm {
+  padding: var(--md-spacing-xs) var(--md-spacing-md);
+  font-size: 0.875rem;
+  border-radius: 8px !important;
+  font-weight: 500;
+  transition: var(--md-transition);
+  box-shadow: var(--md-elevation-1);
+  min-height: 32px;
+}
+
+.text-end .btn-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--md-elevation-2);
+}
+
+.text-end .btn-sm:active {
+  transform: translateY(0);
+}
+
+.text-end .btn-outline-secondary {
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: none;
+}
+
+.text-end .btn-outline-secondary:hover {
+  background: var(--md-surface-variant);
+  border-color: rgba(0, 0, 0, 0.24);
+  color: var(--md-on-surface);
+  box-shadow: var(--md-elevation-1);
+}
+
+.text-end .btn-danger {
+  background: var(--md-error);
+  color: var(--md-on-primary);
+  border: none;
+}
+
+.text-end .btn-danger:hover {
+  background: #9a1616;
+  box-shadow: var(--md-elevation-2);
+}
+
+.text-end .me-1 {
+  margin-right: var(--md-spacing-sm);
+}
+
+.py-4 {
+  padding: var(--md-spacing-xl) 0;
+  text-align: center;
+  color: var(--md-on-surface-variant);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.875rem;
+  }
+
+  .table td,
+  .table th {
+    padding: var(--md-spacing-sm);
+  }
+
+  .text-end .btn-sm {
+    padding: var(--md-spacing-xs) var(--md-spacing-md);
+    font-size: 0.875rem;
+    border-radius: 8px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .text-end {
+    text-align: left;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-spacing-xs);
+  }
+}

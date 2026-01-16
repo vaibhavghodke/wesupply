@@ -1,11 +1,59 @@
-.user-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 18px;
-  background: #007bff;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Login Component - Material Design 3 */
+
+.container {
+  max-width: 440px;
+  margin-top: 48px;
+  margin-bottom: 48px;
+}
+
+h3 {
+  font-weight: 700;
+  color: var(--md-on-surface);
+  margin-bottom: var(--md-spacing-xl);
+  font-size: 2rem;
+  text-align: center;
+}
+
+.alert {
+  margin-bottom: var(--md-spacing-lg);
+  border-radius: var(--md-radius-md);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--md-on-surface);
+  margin-bottom: var(--md-spacing-sm);
+}
+
+.form-control {
+  width: 100%;
+  padding: var(--md-spacing-md);
+  font-size: 1rem;
+  border-radius: var(--md-radius-sm);
+  transition: var(--md-transition);
+}
+
+.form-control:focus {
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 3px rgba(30, 143, 62, 0.12);
+}
+
+.btn-primary {
+  width: 100%;
+  margin-top: var(--md-spacing-md);
+  padding: var(--md-spacing-md);
+  font-size: 1rem;
   font-weight: 600;
+}
+
+@media (max-width: 576px) {
+  .container {
+    margin-top: var(--md-spacing-lg);
+    padding: var(--md-spacing-md);
+  }
+
+  h3 {
+    font-size: 1.75rem;
+    margin-bottom: var(--md-spacing-lg);
+  }
 }

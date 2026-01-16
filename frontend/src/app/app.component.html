@@ -1,37 +1,62 @@
 <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
-    <a [routerLink]="['/']" style="display:inline-block;vertical-align:middle">
-      <img src="assets/logo.png" alt="WeSupply" style="width:70px;height:70px;object-fit:contain">
-    </a>
-    <a class="navbar-brand" [routerLink]="['/']">WeSupply</a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a [routerLink]="['/']" style="display:inline-block;vertical-align:middle" aria-label="WeSupply Home">
+        <img src="assets/logo.png" alt="WeSupply" style="width:56px;height:56px;object-fit:contain;border-radius:8px">
+      </a>
+      <a class="navbar-brand" [routerLink]="['/']" aria-label="WeSupply">WeSupply</a>
+    </div>
     
-    <div style="display:flex;align-items:center;gap:16px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
       <ng-container *ngIf="currentUser?.role === 'admin'">
-        <a class="me-3" [routerLink]="['/manage-items']">Manage Items</a>
-        <a class="me-3" [routerLink]="['/manage-users']">Manage Users</a>
+        <a [routerLink]="['/manage-items']" aria-label="Manage Items">Manage Items</a>
+        <a [routerLink]="['/manage-users']" aria-label="Manage Users">Manage Users</a>
       </ng-container>
-      <a class="me-3" [routerLink]="['/register']">Register</a>
-      <a class="me-3" [routerLink]="['/order-summary']">Order Summary</a>
-      
+      <a [routerLink]="['/register']" aria-label="Register">Register</a>
+      <a [routerLink]="['/order-summary']" aria-label="Order Summary">Order Summary</a>
 
-      <div style="margin-left:16px">
+      <div style="margin-left:8px">
         <ng-container *ngIf="currentUser; else notLogged">
           <div style="position:relative;display:inline-block" #userMenuContainer>
-            <div class="user-icon" (click)="showUserMenu = !showUserMenu" title="Account">{{ currentUser.firstname ? (currentUser.firstname.charAt(0) + (currentUser.lastname ? currentUser.lastname.charAt(0) : '')) : (currentUser.userid && currentUser.userid.charAt(0)) }}</div>
-            <div *ngIf="showUserMenu" style="position:absolute;right:0;top:44px;background:#fff;border:1px solid #ddd;padding:12px;min-width:220px;z-index:30">
-              <div><strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong></div>
-              <div class="text-muted" style="font-size:12px">{{ currentUser.email }}</div>
-              <hr />
-              <a (click)="logout()" style="cursor:pointer">Logout</a>
+            <button 
+              id="user-menu-button"
+              class="user-icon" 
+              (click)="showUserMenu = !showUserMenu" 
+              [attr.aria-expanded]="showUserMenu"
+              [attr.aria-label]="'Account menu for ' + currentUser.firstname"
+              [attr.aria-haspopup]="true"
+              type="button"
+              title="Account">
+              {{ currentUser.firstname ? (currentUser.firstname.charAt(0) + (currentUser.lastname ? currentUser.lastname.charAt(0) : '')) : (currentUser.userid && currentUser.userid.charAt(0)) }}
+            </button>
+            <div 
+              *ngIf="showUserMenu" 
+              class="user-menu-dropdown"
+              role="menu"
+              [attr.aria-labelledby]="'user-menu-button'">
+              <div class="user-menu-header">
+                <div class="user-menu-name"><strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong></div>
+                <div class="user-menu-email">{{ currentUser.email }}</div>
+              </div>
+              <hr class="user-menu-divider" />
+              <button 
+                class="user-menu-item" 
+                (click)="logout()" 
+                role="menuitem"
+                type="button">
+                Logout
+              </button>
             </div>
           </div>
         </ng-container>
         <ng-template #notLogged>
-          <a [routerLink]="['/login']">Login</a>
+          <a [routerLink]="['/login']" aria-label="Login">Login</a>
         </ng-template>
       </div>
     </div>
   </div>
 </nav>
 
-<router-outlet></router-outlet>
+<main id="main-content">
+  <router-outlet></router-outlet>
+</main>

@@ -1,3 +1,68 @@
-.container { max-width: 1100px; }
+/* Order Summary Component - Material Design 3 */
 
-.table td, .table th { vertical-align: middle; }
+.container {
+  max-width: 1200px;
+}
+
+.container h4 {
+  font-weight: 700;
+  color: var(--md-on-surface);
+  margin-bottom: var(--md-spacing-lg);
+}
+
+.table {
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--md-elevation-2);
+  margin-bottom: var(--md-spacing-lg);
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+  padding: var(--md-spacing-md);
+}
+
+.table thead {
+  background: linear-gradient(135deg, var(--md-surface-variant), rgba(30, 143, 62, 0.05));
+}
+
+.table tbody tr {
+  transition: var(--md-transition);
+}
+
+.table tbody tr:hover {
+  background: rgba(30, 143, 62, 0.05);
+}
+
+.text-center {
+  padding: var(--md-spacing-xl);
+  color: var(--md-on-surface-variant);
+}
+
+.py-4 {
+  padding: var(--md-spacing-xl) 0;
+  text-align: center;
+  color: var(--md-on-surface-variant);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.875rem;
+  }
+
+  .table td,
+  .table th {
+    padding: var(--md-spacing-sm);
+  }
+}
+
+@media (max-width: 576px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
